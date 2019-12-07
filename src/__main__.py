@@ -13,22 +13,48 @@ import time as t
 import os
 import json
 import threading
-import multiprocessing
+# import multiprocessing
 
-def SendTweet(input = ""):
+def SendTweet(input):
     print(input)
     t.sleep(10)
     print("Finished tweeting.")
     return
 
-def Random_Song_Exe():
-    i = 0
-    while True:
-        i+=1
+def Random_Song_Exe(sc, ss, tc, ts, td, lt, dir):
+    data_file = os.path.join(THIS_FOLDER, "data.json")
 
-TIME_BETWEEN_UPDATES = timedelta(days=0, hours=1.0, minutes=0, seconds=0) # Time between each tweet
+    while True:
+        data = {}
+        with open(dir) as d:
+            data = json.load(d)
+
+        # These are getting updated every single loop in case the user decides to update them
+        TIME_BETWEEN_UPDATES = timedelta(days=data.timedelta['days'], hours=data.timedelta['hours'], minutes=data.timedelta['minutes'], seconds=data.timedelta['seconds']) # Time between each tweet
+        time_of_last_tweet = timedate(data['lastTweet'])
+
+        current_time = datetime.utcnow()
+
+        currentTD = current_time - time_of_last_tweet
+        print(dt5 >= TIME_BETWEEN_UPDATES)
+        if currentTD > TIME_BETWEEN_UPDATES:
+            # Get Song Data
+
+            # Make Tweet
+
+            # Tweet
+
+            time_of_last_tweet = timedate.utcnow()
+            data['lastTweet'] = time_of_last_tweet.strftime('%Y,%m,%d,%H,%M,%S')
+            with open(dir) as d:
+                json.dump(data, d)
+
+
+# Pull in the data from the last time the bot was active
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
 could_connect_to_spotify = True # In the future, random_song_exe will actually check if it can connect
-could_connect_to_twitter = True
+could_connect_to_twitter = True # Now, the connection is assumed
 
 print("##################################################\n" +
       "#                                                #\n" +
@@ -39,21 +65,20 @@ print("##################################################\n" +
       "##################################################")
 
 # Get keys from auth.json
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 auth_file = os.path.join(THIS_FOLDER, "auth.json")
-data = {}
-with open(auth_file) as f:
-    data = json.load(f)
+auth = {}
+with open(auth_file) as a:
+    auth = json.load(a)
 
 # Connect to Spotify
 
-spotify_client = data['spotify_client']
-spotify_secret = data['spotify_secret']
+spotify_client = auth['spotify_client']
+spotify_secret = auth['spotify_secret']
 
 # Connect to Twitter
 
-twitter_client = data['twitter_client']
-twitter_secret = data['twitter_secret']
+twitter_client = auth['twitter_client']
+twitter_secret = auth['twitter_secret']
 
 # Ask whether to bootup if both connnections were successful
 
@@ -119,10 +144,3 @@ if should_start == "y":
             print("[INACTIVE]")
 
 print("\n\tGoodbye!\n")
-
-# dt3 = datetime.utcnow()
-# t.sleep(3)
-# dt4 = datetime.utcnow()
-#
-# dt5 = dt4 - dt3
-# print(dt5 >= TIME_BETWEEN_UPDATES)

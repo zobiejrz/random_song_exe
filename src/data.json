@@ -1,0 +1,10 @@
+{
+    var timedelta = {
+        "days": 0,
+        "hours": 1,
+        "minutes": 0,
+        "seconds": 0
+    },
+
+    "lastTweet": "2019,12,06,12,00,00"
+}
