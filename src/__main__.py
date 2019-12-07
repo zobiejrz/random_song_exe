@@ -79,6 +79,8 @@ spotify_secret = auth['spotify_secret']
 
 twitter_client = auth['twitter_client']
 twitter_secret = auth['twitter_secret']
+twitter_access_token = auth['twitter_access_token']
+twitter_access_token_secret = auth['twitter_access_token_secret']
 
 # Ask whether to bootup if both connnections were successful
 
