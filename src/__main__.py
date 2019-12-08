@@ -6,47 +6,99 @@
 #                                                #
 ##################################################
 
-from datetime import datetime
-from datetime import time
-from datetime import timedelta
+from datetime import datetime # IMPORTANT
+from datetime import time # IMPORTANT
+from datetime import timedelta # IMPORTANT
 import time as t
-import os
-import json
-import threading
-# import multiprocessing
+import os # IMPORTANT
+import json # IMPORTANT
+import threading # IMPORTANT
+import requests # IMPORTANT
+from Song import *
+from Album import *
+import random
+import base64 # IMPORTANT
+
+
+
+def GetClientCredentials(spotify_client, spotify_secret):
+    """Gets the Spotify Client credentials needed to perform api calls"""
+    s = "{}:{}".format(spotify_client, spotify_secret)
+    b = s.encode("UTF-8")
+    e = base64.b64encode(b)
+
+    header = {"Authorization": "Basic {}".format(e)}
+    data = {'grant_type' : "client_credentials"}
+
+    url = "https://accounts.spotify.com/api/token"
+    a = requests.post(url, data=data, auth = (spotify_client, spotify_secret))
+
+    creds = a.json()
+    return creds['access_token']
+
+def GetRandomSong(sc, ss):
+    url = "https://api.spotify.com/v1/browse/new-releases"
+    header = {"Authorization": "Bearer {}".format(GetClientCredentials(sc, ss))}
+    a = requests.get(url, headers=header)
+
+    data = {}
+    data = a.json()
+
+    # THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    # dir = os.path.join(THIS_FOLDER, "test1.json")
+    #
+    # with open(dir, "w") as d:
+    #     json.dump(data, d)
+
+    potential_list = []
+    albums = data['albums']['items']
+    for album in albums:
+        newAlbum = Album(album["name"], album["id"], album["artists"][0]["name"])
+        potential_list.append(newAlbum)
+
+    currentAlbum = random.choice(potential_list)
+    url = "https://api.spotify.com/v1/albums/{}/tracks".format(currentAlbum.id)
+
+    b = requests.get(url, headers=header)
+    song_data = b.json()
+
+    song_list = []
+    songs = song_data["items"]
+    for song in songs:
+        newSong = Song(song["name"], song["artists"][0]["name"])
+        song_list.append(newSong)
+
+    return random.choice(song_list)
 
 def SendTweet(input):
-    print(input)
-    t.sleep(10)
-    print("Finished tweeting.")
+    
     return
 
-def Random_Song_Exe(sc, ss, tc, ts, td, lt, dir):
-    data_file = os.path.join(THIS_FOLDER, "data.json")
-
+def Random_Song_Exe(sc, ss):
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    dir = os.path.join(THIS_FOLDER, "data.json")
     while True:
         data = {}
         with open(dir) as d:
             data = json.load(d)
 
         # These are getting updated every single loop in case the user decides to update them
-        TIME_BETWEEN_UPDATES = timedelta(days=data.timedelta['days'], hours=data.timedelta['hours'], minutes=data.timedelta['minutes'], seconds=data.timedelta['seconds']) # Time between each tweet
-        time_of_last_tweet = timedate(data['lastTweet'])
+        TIME_BETWEEN_UPDATES = timedelta(hours=data['timedelta']['hours'], minutes=data['timedelta']['minutes'], seconds=data['timedelta']['seconds']) # Time between each tweet
+        time_of_last_tweet = datetime(year=data['lastTweet']['years'], month=data['lastTweet']['months'], day=data['lastTweet']['days'], hour=data['lastTweet']['hours'], minute=data['lastTweet']['minutes'], second=data['lastTweet']['seconds'])
 
         current_time = datetime.utcnow()
 
         currentTD = current_time - time_of_last_tweet
-        print(dt5 >= TIME_BETWEEN_UPDATES)
         if currentTD > TIME_BETWEEN_UPDATES:
             # Get Song Data
-
+            song = GetRandomSong(sc, ss)
             # Make Tweet
-
+            text = "{} by {}".format(song.name, song.artist)
             # Tweet
-
-            time_of_last_tweet = timedate.utcnow()
-            data['lastTweet'] = time_of_last_tweet.strftime('%Y,%m,%d,%H,%M,%S')
-            with open(dir) as d:
+            print(text)
+            time_of_last_tweet = datetime.utcnow()
+            data['lastTweet'] = {"years": time_of_last_tweet.year, "months": time_of_last_tweet.month, "days": time_of_last_tweet.day, "hours": time_of_last_tweet.hour, "minutes": time_of_last_tweet.minute, "seconds": time_of_last_tweet.second}
+            with open(dir, "w") as d:
                 json.dump(data, d)
 
 
@@ -97,7 +149,7 @@ if should_start == "y":
     print("\n[ ACTIVE ]")
     print("Type 'quit' to turn off the bot. Push the enter key for other commands.\n")
     # Thread 1: Manage Tweets as expected -- Check delta times, etc...
-    bot = threading.Thread(target=Random_Song_Exe, daemon=True)
+    bot = threading.Thread(target=Random_Song_Exe, args=(spotify_client, spotify_secret,), daemon=True)
     bot.start()
 
     # Main Thread: User Input+Commands
