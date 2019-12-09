@@ -12,5 +12,4 @@ class Album:
         return "%-20s" % "{}".format(self.name) + "by" + "%-10s" % "{}".format(self.artist) + " :- " + self.id
 
     def __unicode__(self):
-        def __str__(self):
-            return u"%-20s" % "{}".format(self.name) + "by" + "%-10s" % "{}".format(self.artist) + " :- " + self.id
+            return u"%-20s" % "{}".format(self.name) + "by " + "%-10s" % "{}".format(self.artist) + " :- " + self.id

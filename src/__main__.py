@@ -18,6 +18,7 @@ from Song import *
 from Album import *
 import random
 import base64 # IMPORTANT
+import tweepy
 
 
 
@@ -37,41 +38,34 @@ def GetClientCredentials(spotify_client, spotify_secret):
     return creds['access_token']
 
 def GetRandomSong(sc, ss):
-    url = "https://api.spotify.com/v1/browse/new-releases"
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    dir = os.path.join(THIS_FOLDER, "wotd.json")
+    wotd = {}
+    with open(dir) as d:
+        wotd = json.load(d)
+
+    url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(wotd["wotd"], random.randint(0, 10000))
     header = {"Authorization": "Bearer {}".format(GetClientCredentials(sc, ss))}
     a = requests.get(url, headers=header)
 
-    data = {}
-    data = a.json()
-
-    # THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    # dir = os.path.join(THIS_FOLDER, "test1.json")
-    #
+    # dir = os.path.join(THIS_FOLDER, "output.json")
     # with open(dir, "w") as d:
-    #     json.dump(data, d)
+    #     json.dump(a.json(), d)
 
-    potential_list = []
-    albums = data['albums']['items']
-    for album in albums:
-        newAlbum = Album(album["name"], album["id"], album["artists"][0]["name"])
-        potential_list.append(newAlbum)
+    item = a.json()["tracks"]["items"][0]
 
-    currentAlbum = random.choice(potential_list)
-    url = "https://api.spotify.com/v1/albums/{}/tracks".format(currentAlbum.id)
+    artist = item["album"]["artists"][0]["name"]
+    name = item["name"]
+    link = item["external_urls"]["spotify"]
 
-    b = requests.get(url, headers=header)
-    song_data = b.json()
-
-    song_list = []
-    songs = song_data["items"]
-    for song in songs:
-        newSong = Song(song["name"], song["artists"][0]["name"])
-        song_list.append(newSong)
-
-    return random.choice(song_list)
+    newSong = Song(name, artist, link)
+    return newSong
 
 def SendTweet(input):
-    
+    try:
+        api.update_status(input)
+    except tweepy.TweepError as e:
+        print(e.message)
     return
 
 def Random_Song_Exe(sc, ss):
@@ -92,10 +86,10 @@ def Random_Song_Exe(sc, ss):
         if currentTD > TIME_BETWEEN_UPDATES:
             # Get Song Data
             song = GetRandomSong(sc, ss)
-            # Make Tweet
-            text = "{} by {}".format(song.name, song.artist)
             # Tweet
-            print(text)
+
+            SendTweet(str(song))
+
             time_of_last_tweet = datetime.utcnow()
             data['lastTweet'] = {"years": time_of_last_tweet.year, "months": time_of_last_tweet.month, "days": time_of_last_tweet.day, "hours": time_of_last_tweet.hour, "minutes": time_of_last_tweet.minute, "seconds": time_of_last_tweet.second}
             with open(dir, "w") as d:
@@ -133,6 +127,10 @@ twitter_client = auth['twitter_client']
 twitter_secret = auth['twitter_secret']
 twitter_access_token = auth['twitter_access_token']
 twitter_access_token_secret = auth['twitter_access_token_secret']
+
+auth = tweepy.OAuthHandler(twitter_client, twitter_secret)
+auth.set_access_token(twitter_access_token, twitter_access_token_secret)
+api = tweepy.API(auth)
 
 # Ask whether to bootup if both connnections were successful
 
