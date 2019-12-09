@@ -6,14 +6,12 @@
 #                                                #
 ##################################################
 
-from datetime import * # IMPORTANT
-import os # IMPORTANT
-import json # IMPORTANT
-import threading # IMPORTANT
-import requests # IMPORTANT
+from datetime import *
+import os
+import json
+import threading
+import requests
 from Song import *
-# import random
-# import base64 # IMPORTANT
 import tweepy
 from Spotify import Spotify
 botShouldRun = False
@@ -36,7 +34,6 @@ def SendTweet(input):
         api.update_status(input)
     except tweepy.TweepError as e:
         print(e.message)
-    return
 
 def Random_Song_Exe(sc, ss):
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -66,7 +63,6 @@ def Random_Song_Exe(sc, ss):
             data['lastTweet'] = {"years": time_of_last_tweet.year, "months": time_of_last_tweet.month, "days": time_of_last_tweet.day, "hours": time_of_last_tweet.hour, "minutes": time_of_last_tweet.minute, "seconds": time_of_last_tweet.second}
             with open(dir, "w") as d:
                 json.dump(data, d)
-
 
 # Pull in the data from the last time the bot was active
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -116,19 +112,53 @@ while running:
         for t in threading.enumerate():
             i+=1
 
+        word = {}
+        wotd_dir = os.path.join(THIS_FOLDER, "wotd.json")
+        with open(wotd_dir) as d:
+            word = json.load(d)
+
         print("\nSTATUS")
         print("%-30s" % "Is Active" + "{}".format("[ ACTIVE ]" if bot.isAlive() else "[INACTIVE]"))
         print("%-30s" % "Number of Threads Active" + "{}".format(i))
         print("%-30s" % "Time of next tweet" + "{}".format('datetime'))
         print("%-30s" % "Frequency of tweets" + "{}".format('datetime'))
         print()
-        print("%-30s" % "WOTD" + "{}".format('word'))
+        print("%-30s" % "WOTD" + "{}".format(word['wotd']))
         print("%-30s" % "Number of Tweets" + "{}".format(api.me().statuses_count))
         print()
 
     elif user_input == "wotd":
-        pass
+        new_word = input("What is the new word/phrase: ")
+        word_json = {'wotd': '{}'.format(new_word)}
+
+        wotd_dir = os.path.join(THIS_FOLDER, "wotd.json")
+        with open(wotd_dir, "w") as d:
+            json.dump(word_json, d)
+
+        print("'{}' is now the new word\n".format(new_word))
+
     elif user_input == "freq":
+        # new_hour = input("  Hours: ")
+        # new_minute = input("Minutes: ")
+        # new_second = input("Seconds: ")
+        #
+        # timedelta = { 'hours': '{}'.format(new_hour), 'minutes': '{}'.format(new_minute), 'seconds': '{}'.format(new_second) }
+        #
+        # old_data = {}
+        # last_tweet = {}
+        # wotd_dir = os.path.join(THIS_FOLDER, "data.json")
+        # with open(wotd_dir) as d:
+        #     old_data = json.load(d)
+        #
+        # last_tweet = old_data['lastTweet']
+        #
+        # data = {'timedelta': timedelta, 'lastTweet': last_tweet.json()}
+        #
+        # freq_dir = os.path.join(THIS_FOLDER, "data.json")
+        # with open(freq_dir, "w") as d:
+        #     json.dump(data, d)
+        #
+        # print("Tweets will now occur every {}:{} {}\n".format(new_word))
         pass
     elif user_input == "toggle":
         if bot.isAlive():
