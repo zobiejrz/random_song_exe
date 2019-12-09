@@ -1,3 +1,10 @@
+##################################################
+#                                                #
+#             random_song_exe v0.1               #
+#             made by Ben Zobrist                #
+#             © Ben Zobrist 2019                 #
+#                                                #
+##################################################
 
 import webbrowser
 import tweepy
