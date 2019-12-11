@@ -1,11 +1,3 @@
-##################################################
-#                                                #
-#             random_song_exe v0.1               #
-#             made by Ben Zobrist                #
-#             © Ben Zobrist 2019                 #
-#                                                #
-##################################################
-
 import webbrowser
 import tweepy
 
@@ -18,7 +10,7 @@ the user key+secret. Put those into the auth.json file to run the bot.
 Note: The key+secret only need to be obtained once for each user.
 
 EDITS:
-The original code isnt compatible with Python 3 and was edited to become compatible
+The original code isnt compatible with Python 3 and was edited to fix compatibility issues.
 Line 28 was originally two prints that showed the Key and Secret seprately, but was broken.
 """
 
