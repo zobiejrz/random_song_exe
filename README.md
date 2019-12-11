@@ -15,7 +15,12 @@
 
 ## Usage
 
-If you want to make your own bot using my code, you will need to do some set up.After making your own Twitter and Spotify Apps, you will need to put the app keys in auth.json. The 'twitter_access_token' and 'twitter_access_token_secret' are unique for each twitter account and need to be obtained one time for whatever twitter you want to run the bot on. Run AuthorizeBotForUser.py to log into your Twitter account. You will be prompted for a verifier number by the script that Twitter provides, then copy the token and the secret into auth.json.
+If you want to make your own bot using my code, you will need to do some set up:
+1. Make your own Twitter and Spotify Apps - you will need to put the four app keys in auth.json. 
+2. Run AuthorizeBotForUser.py to log into your Twitter account. Type the verifier number into the script to obtain the 'twitter_access_token' and 'twitter_access_token_secret' for whatever twitter account you want to run the bot on. Put this in auth.json
+3. Run your bot!
+
+The bot comes with some commands to make running it useful. Type 'toggle' to start/stop the bot. Type 'options' to see the full list of commands.
 
 ## Author
 
