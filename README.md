@@ -11,13 +11,11 @@
 
 > A Twitter bot that posts a random(ish) song from Spotify every hour!
 
-### 🏠 [Homepage](https://twitter.com/random_song_exe)
+### 🏠 [Visit](https://twitter.com/random_song_exe)
 
 ## Usage
 
-```sh
-If you want to make your own bot using my code, you will need to do some set up. After making your own Twitter and Spotify Apps, you will need to put the app keys in auth.json. The 'twitter_access_token' and 'twitter_access_token_secret' are unique for each twitter account and need to be obtained one time for whatever twitter you want to run the bot on. Run AuthorizeBotForUser.py to log into your Twitter account. You will be prompted for a verifier number by the script that Twitter provides, then copy the token and the secret into auth.json.
-```
+If you want to make your own bot using my code, you will need to do some set up.After making your own Twitter and Spotify Apps, you will need to put the app keys in auth.json. The 'twitter_access_token' and 'twitter_access_token_secret' are unique for each twitter account and need to be obtained one time for whatever twitter you want to run the bot on. Run AuthorizeBotForUser.py to log into your Twitter account. You will be prompted for a verifier number by the script that Twitter provides, then copy the token and the secret into auth.json.
 
 ## Author
 
