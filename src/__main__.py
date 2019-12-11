@@ -41,6 +41,7 @@ def Random_Song_Exe(sc, ss):
     while True:
         if not botShouldRun:
             break;
+            
         data = {}
         with open(dir) as d:
             data = json.load(d)
