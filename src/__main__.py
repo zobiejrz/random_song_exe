@@ -41,12 +41,12 @@ def Random_Song_Exe(sc, ss):
     while True:
         if not botShouldRun:
             break;
-            
+
         data = {}
         with open(dir) as d:
             data = json.load(d)
 
-        # These are getting updated every single loop in case the user decides to update them
+        # These are getting declared every single loop so the user can update them
         TIME_BETWEEN_UPDATES = timedelta(hours=data['timedelta']['hours'], minutes=data['timedelta']['minutes'], seconds=data['timedelta']['seconds']) # Time between each tweet
         time_of_last_tweet = datetime(year=data['lastTweet']['years'], month=data['lastTweet']['months'], day=data['lastTweet']['days'], hour=data['lastTweet']['hours'], minute=data['lastTweet']['minutes'], second=data['lastTweet']['seconds'])
 
