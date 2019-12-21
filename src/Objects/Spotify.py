@@ -52,13 +52,13 @@ class Spotify:
         """
 
         # Get the wotd
-        dir = os.path.join(THIS_FOLDER, "wotd.json")
+        dir = os.path.join(THIS_FOLDER, "../Persistent/wotd.json")
         wotd = {} # The word that is used in the search
         with open(dir) as d:
             wotd = json.load(d)
 
         # Get the json from spotify
-        query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(wotd["wotd"], random.randint(0, 500))
+        query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(wotd["wotd"], 1 ) #random.randint(0, 500))
         header = {"Authorization": "Bearer {}".format(self.GetClientCredentials())}
         response = requests.get(query_url, headers=header)
         item = response.json()["tracks"]["items"][0]

@@ -1,3 +1,8 @@
+import os
+import json
+import threading
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
 def PrintOptions():
     """
     Prints all commands
@@ -39,7 +44,7 @@ def UpdateFreq():
         new_hours = GetPositiveInteger("Hours")
         new_minutes = GetPositiveInteger("Minutes")
         new_seconds = GetPositiveInteger("Seconds")
-        
+
         if (new_days == 0 and new_hours == 0 and new_minutes == 0 and new_seconds == 0):
             print("The new values can't all be zero.\n")
         else:
@@ -68,7 +73,7 @@ def UpdateFreq():
     minutes = data['timedelta']['minutes']
     seconds = data['timedelta']['seconds']
 
-    print("Tweets will now occur every {}.\n".format(""))
+    print("Tweets will now occur every {} day(s), {} hour(s), {} minute(s), and {} second(s).\n".format(int(days), int(hours), int(minutes), int(seconds)))
 
 def GetPositiveInteger(title):
     """
@@ -77,9 +82,9 @@ def GetPositiveInteger(title):
     while True:
         try:
             output_str = input("{}: ".format(title))
-            output = int(output_str)
+            output = float(output_str)
 
-            if (output < 0 or not ouput.is_integer()):
+            if (output < 0 or not output.is_integer()):
                 print("Input must be a positive integer")
             else:
                 return output
