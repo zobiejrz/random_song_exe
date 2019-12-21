@@ -12,10 +12,20 @@ Note: The key+secret only need to be obtained once for each user.
 EDITS:
 The original code isnt compatible with Python 3 and was edited to fix compatibility issues.
 Line 28 was originally two prints that showed the Key and Secret seprately, but was broken.
+Lines 18-28 were added to automatically grab the keys from auth.json
 """
 
-consumer_key = "xxx-xxx-123"
-consumer_secret = "xxx-xxx-123"
+# Pull in the data from the last time the bot was active
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
+# Gets keys from auth.json
+auth_file = os.path.join(THIS_FOLDER, "../Persistent/auth.json")
+auth = {}
+with open(auth_file) as a:
+    auth = json.load(a)
+
+consumer_key = auth['twitter_client']
+consumer_secret = auth['twitter_secret']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
