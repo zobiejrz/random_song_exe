@@ -58,5 +58,5 @@ class Bot:
             print ( "[ ACTIVE ]" )
             print ( "Bot Activated\n" )
 
-    def IsRunning():
+    def IsRunning(self):
         return botShouldRun
