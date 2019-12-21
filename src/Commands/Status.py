@@ -54,12 +54,12 @@ def GetTimeToNextTweet(api):
 
     return next_time.strftime("%m/%d/%Y, %H:%M:%S")
 
-def PrintStatus(api):
+def PrintStatus(api, random_song_exe):
     """
     Prints the bot status
     """
     print("\nSTATUS")
-    print("%-25s" % "Is Active" + "{}".format("[ ACTIVE ]" if bot_thread.isAlive() else "[INACTIVE]"))
+    print("%-25s" % "Is Active" + "{}".format("[ ACTIVE ]" if random_song_exe.IsRunning() else "[INACTIVE]"))
     print("%-25s" % "Number of Threads" + "{}".format(GetNumberOfThreads()))
     print("%-25s" % "Current Word" + "{}".format(GetWOTD()))
     print("%-25s" % "Frequency of Tweets" + "{}".format(GetFrequency()))

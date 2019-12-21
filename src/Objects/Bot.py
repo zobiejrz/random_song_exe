@@ -57,3 +57,6 @@ class Bot:
             self.bot_thread.start()
             print ( "[ ACTIVE ]" )
             print ( "Bot Activated\n" )
+
+    def IsRunning():
+        return botShouldRun

@@ -14,7 +14,7 @@ def TakeCommands(api, spotify):
         user_input = input(" >>> ")
 
         if user_input == "status":
-            PrintStatus(api)
+            PrintStatus(api, random_song_exe)
         elif user_input == "wotd":
             UpdateWOTD()
         elif user_input == "freq":
