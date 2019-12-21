@@ -38,7 +38,7 @@ class Bot:
                 # Tweet
                 try:
                     api.update_status(str(song))
-                except tweepy.tweepy.TweepError as e:
+                except tweepy.TweepError as e:
                     print(e.message)
                 time_of_last_tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0].created_at
 
