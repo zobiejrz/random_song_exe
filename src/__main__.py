@@ -129,14 +129,6 @@ while running:
         print()
 
     elif user_input == "wotd":
-        new_word = input("What is the new word/phrase: ")
-        word_json = {'wotd': '{}'.format(new_word)}
-
-        wotd_dir = os.path.join(THIS_FOLDER, "wotd.json")
-        with open(wotd_dir, "w") as d:
-            json.dump(word_json, d)
-
-        print("'{}' is now the new word\n".format(new_word))
 
     elif user_input == "freq":
         # new_hour = input("  Hours: ")
