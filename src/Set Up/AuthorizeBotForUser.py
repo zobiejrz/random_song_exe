@@ -14,8 +14,8 @@ The original code isnt compatible with Python 3 and was edited to fix compatibil
 Line 28 was originally two prints that showed the Key and Secret seprately, but was broken.
 """
 
-consumer_key = "3OqpbH75fNJ6ZFmsF3zN2flIc"
-consumer_secret = "jAG1rDyzPUxFEQWVM4fq5dMJo5sQrHhi3jd62bB1BjnL2QMqBn"
+consumer_key = "xxx-xxx-123"
+consumer_secret = "xxx-xxx-123"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
