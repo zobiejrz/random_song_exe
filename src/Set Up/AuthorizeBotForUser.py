@@ -1,6 +1,7 @@
 import webbrowser
 import tweepy
-
+import os
+import json
 """
 Taken from https://github.com/tweepy/examples/blob/master/oauth/getaccesstoken.py
 

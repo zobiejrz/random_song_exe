@@ -3,6 +3,7 @@ import os
 import datetime
 from datetime import timedelta
 import json
+import tweepy
 
 class Bot:
 
