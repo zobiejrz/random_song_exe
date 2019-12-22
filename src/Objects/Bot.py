@@ -39,7 +39,7 @@ class Bot:
                 try:
                     api.update_status(str(song))
                 except tweepy.TweepError as e:
-                    print(e.message)
+                    print(e)
                 time_of_last_tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0].created_at
 
     def Toggle(self, api, spotify):
