@@ -37,8 +37,6 @@ def GetFrequency():
     return "{} day(s), {} hour(s), {} minute(s), {} second(s)".format(int(days), int(hours), int(minutes), int(seconds))
 
 def GetTimeToNextTweet(api):
-    tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0]
-
     data_dir = os.path.join(THIS_FOLDER, "../Persistent/data.json")
     data = {}
     with open(data_dir) as d:
@@ -48,11 +46,19 @@ def GetTimeToNextTweet(api):
     hours = data['timedelta']['hours']
     minutes = data['timedelta']['minutes']
     seconds = data['timedelta']['seconds']
-    delta = timedelta(days, hours, minutes, seconds)
-
-    next_time = (tweet.created_at + delta)
+    delta = datetime.timedelta(days=days, hours=hours, minutes=minutes, seconds=seconds)
+    # print("{}:{}:{}:{}".format(days, hours, minutes, seconds))
+    next_time = (GetTimeOfLastTweet(api) + delta)
 
     return next_time.strftime("%m/%d/%Y, %H:%M:%S")
+
+def GetTimeOfLastTweet(api):
+    tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0]
+    return tweet.created_at
+
+def GetTotalNumberOfTweets(api):
+    return api.me().statuses_count
+
 
 def PrintStatus(api, random_song_exe):
     """
@@ -62,6 +68,9 @@ def PrintStatus(api, random_song_exe):
     print("%-25s" % "Is Active" + "{}".format("[ ACTIVE ]" if random_song_exe.IsRunning() else "[INACTIVE]"))
     print("%-25s" % "Number of Threads" + "{}".format(GetNumberOfThreads()))
     print("%-25s" % "Current Word" + "{}".format(GetWOTD()))
+    print("%-25s" % "Number of Tweets" + "{}".format(GetTotalNumberOfTweets(api)))
+    print()
     print("%-25s" % "Frequency of Tweets" + "{}".format(GetFrequency()))
-    print("%-25s" % "Time of Next Tweet" + "{}".format(GetTimeToNextTweet(api)))
+    print("%-25s" % "Time of Next Tweet" + "{} (Last tweet at {})".format(GetTimeToNextTweet(api), GetTimeOfLastTweet(api).strftime("%H:%M:%S")))
+    print("%-25s" % "Current Time" + "{}".format(datetime.datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S")))
     print()
