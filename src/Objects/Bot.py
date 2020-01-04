@@ -20,7 +20,7 @@ class Bot:
         time_of_last_tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0].created_at
         while True:
             if not self.botShouldRun:
-                break;
+                break
 
             data = {}
             with open(dir) as d:
