@@ -2,6 +2,7 @@ import threading
 import os
 import json
 import datetime
+import tweepy
 from datetime import timedelta
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -12,7 +13,7 @@ def Tweet(api, input):
     try:
         api.update_status(input)
     except tweepy.TweepError as e:
-        print(e.message)
+        print(e)
 
 def SingleStatus(api):
     valid_length = False

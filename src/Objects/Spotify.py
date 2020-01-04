@@ -19,12 +19,10 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class Spotify:
 
-    spotify_client = 0
-    spotify_secret = 0
-
     def __init__(self, client=0, secret=0):
         self.spotify_client = client
         self.spotify_secret = secret
+        self.wordlist = open(THIS_FOLDER + "/../Persistent/wordlist.txt").readlines()
 
     def GetClientCredentials(self):
         """
@@ -50,15 +48,11 @@ class Spotify:
         """
         Gets a random song by searching spotify using wotd and returning a random offset
         """
-
-        # Get the wotd
-        dir = os.path.join(THIS_FOLDER, "../Persistent/wotd.json")
-        wotd = {} # The word that is used in the search
-        with open(dir) as d:
-            wotd = json.load(d)
+        # Get a word from the word list
+        word = self.wordlist[random.randint(0, 99)]
 
         # Get the json from spotify
-        query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(wotd["wotd"], random.randint(0, 500))
+        query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(word, random.randint(0, 250))
         header = {"Authorization": "Bearer {}".format(self.GetClientCredentials())}
         response = requests.get(query_url, headers=header)
         item = response.json()["tracks"]["items"][0]
