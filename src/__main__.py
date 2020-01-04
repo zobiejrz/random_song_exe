@@ -14,6 +14,8 @@ import requests
 import tweepy
 sys.path.insert(1, './Objects/')
 from Spotify import *
+sys.path.insert(1, './Commands/')
+from CommandHandler import *
 
 # Pull in the data from the last time the bot was active
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -39,9 +41,6 @@ api = tweepy.API(auth)
 
 # Set up spotify
 spotify = Spotify(spotify_client, spotify_secret)
-
-sys.path.insert(1, './Commands/')
-from CommandHandler import *
 
 # Set up bot threads
 main_thread = threading.current_thread()

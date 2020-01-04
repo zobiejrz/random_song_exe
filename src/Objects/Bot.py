@@ -3,6 +3,7 @@ import os
 import datetime
 from datetime import timedelta
 import json
+import tweepy
 
 class Bot:
 
@@ -19,7 +20,7 @@ class Bot:
         time_of_last_tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0].created_at
         while True:
             if not self.botShouldRun:
-                break;
+                break
 
             data = {}
             with open(dir) as d:
@@ -38,7 +39,7 @@ class Bot:
                 try:
                     api.update_status(str(song))
                 except tweepy.TweepError as e:
-                    print(e.message)
+                    print(e)
                 time_of_last_tweet = api.user_timeline(id = api.me().screen_name, count = 1)[0].created_at
 
     def Toggle(self, api, spotify):
@@ -56,3 +57,6 @@ class Bot:
             self.bot_thread.start()
             print ( "[ ACTIVE ]" )
             print ( "Bot Activated\n" )
+
+    def IsRunning(self):
+        return self.botShouldRun
