@@ -13,8 +13,6 @@ from random import randint
 import random
 import base64
 from Song import Song
-import logging
-import time
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,7 +23,6 @@ class Spotify:
         self.spotify_client = client
         self.spotify_secret = secret
         self.wordlist = open(THIS_FOLDER + "/../Persistent/wordlist.txt").readlines()
-        logging.basicConfig(filename='../Log/app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
     def GetClientCredentials(self):
         """
@@ -55,23 +52,10 @@ class Spotify:
         word = self.wordlist[random.randint(0, 99)]
 
         # Get the json from spotify
-        tries = 0
-        while True:
-          try:
-
-            if tries == 3:
-              logging.critical('It took 3 tries to find a song, None was returned')
-              return None
-
-            query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(word, random.randint(0, 250))
-            header = {"Authorization": "Bearer {}".format(self.GetClientCredentials())}
-            response = requests.get(query_url, headers=header)
-            item = response.json()["tracks"]["items"][0]
-            break
-          except:
-            logging.error('There was an Error getting a song with the word {}'.format(word))
-            tries += 1
-            time.sleep(10) # We are not trying to look like a DDOS attack
+        query_url = "https://api.spotify.com/v1/search?q={}&type=track&offset={}&limit=1".format(word, random.randint(0, 250))
+        header = {"Authorization": "Bearer {}".format(self.GetClientCredentials())}
+        response = requests.get(query_url, headers=header)
+        item = response.json()["tracks"]["items"][0]
 
         # Parse variables
         artist = item["album"]["artists"][0]["name"]
@@ -81,3 +65,18 @@ class Spotify:
         # Make a song object+return
         newSong = Song(name, artist, link)
         return newSong
+
+
+### FOR TESTING ###
+
+# Gets spotify authentication keys
+# auth_file = os.path.join(THIS_FOLDER, "../auth.json")
+# auth = {}
+# with open(auth_file) as a:
+#     auth = json.load(a)
+# spotify_client = auth['spotify_client']
+# spotify_secret = auth['spotify_secret']
+#
+# # Make Spotify Object + GetCredentials
+# spotify = Spotify(spotify_client, spotify_secret)
+# print(spotify.GetClientCredentials())
