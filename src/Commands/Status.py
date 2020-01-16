@@ -14,6 +14,16 @@ def GetNumberOfThreads():
         i+=1
     return i
 
+def GetWOTD():
+    """
+    Returns WOTD
+    """
+    word = {}
+    wotd_dir = os.path.join(THIS_FOLDER, "../Persistent/wotd.json")
+    with open(wotd_dir) as d:
+        word = json.load(d)
+    return word['wotd']
+
 def GetFrequency():
     data_dir = os.path.join(THIS_FOLDER, "../Persistent/data.json")
     data = {}
@@ -57,6 +67,7 @@ def PrintStatus(api, random_song_exe):
     print("\nSTATUS")
     print("%-25s" % "Is Active" + "{}".format("[ ACTIVE ]" if random_song_exe.IsRunning() else "[INACTIVE]"))
     print("%-25s" % "Number of Threads" + "{}".format(GetNumberOfThreads()))
+    print("%-25s" % "Current Word" + "{}".format(GetWOTD()))
     print("%-25s" % "Number of Tweets" + "{}".format(GetTotalNumberOfTweets(api)))
     print()
     print("%-25s" % "Frequency of Tweets" + "{}".format(GetFrequency()))
