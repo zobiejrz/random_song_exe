@@ -50,6 +50,7 @@ class Bot:
                       api.update_status(str(song))
                       time_of_last_tweet = api.user_timeline(
                           id=api.me().screen_name, count=1)[0].created_at
+                      logging.debug('Tweet successful')
                   except Exception as e:
                       tries += 1
                       logging.critical(str(e))
